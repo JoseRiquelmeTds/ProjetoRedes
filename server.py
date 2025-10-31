@@ -1,7 +1,7 @@
 import socket
 import threading
 
-HOST = '127.0.0.1'
+HOST = '0.0.0.0'
 PORT = 5005
 
 clients = []
@@ -15,7 +15,7 @@ def send_message(message, source_socket):
                 clients.remove(client)
                  
 def handle_client(socket):
-    socket.send("DIGITE SEU NOME".encode())
+    socket.send("DIGITE SEU NOME:".encode())
     nick = socket.recv(1024).decode()
 
     new_user = f"{nick} chegou no chat!"
@@ -29,13 +29,13 @@ def handle_client(socket):
             if not message:
                 break
             
-            send_message(f"{nick}: {message.decode()}".encode(), socket)
+            send_message(f"({nick}): {message.decode()}".encode(), socket)
         except:
             break
 
     clients.remove(socket)
     socket.close()
-    send_message(f"Tchau {nick}! Foi bom te ver aqui!".encode(), socket)
+    send_message(f"{nick} DESCONECTOU".encode(), socket)
     print(f"Tchau {nick}! Foi bom te ver aqui!")
 
 def start_server():
