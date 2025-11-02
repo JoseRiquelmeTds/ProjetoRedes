@@ -27,7 +27,7 @@ def handle_client(socket):
         socket.end("\n--- Histórico das últimas 10 mensagens ---".encode())
         with history_lock:
             for msg in message_history:
-                socket.send(msg.encode())
+                socket.send((msg + '\n').encode())
         socket.send("--------------------------------------------------\n".encode())
     except:
         pass #ignora o betinha se desconectar aqui
