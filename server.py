@@ -6,7 +6,7 @@ PORT = 5005
 
 clients = []
 message_history = [] #pra armazenar o historico das 10 msg
-history_lock = threading.lock() #pra garantir que o historico não vai ser modificado por duas threads at the same time
+history_lock = threading.Lock() #pra garantir que o historico não vai ser modificado por duas threads at the same time
 
 def send_message(message, source_socket):
     for client in clients:
@@ -27,7 +27,7 @@ def handle_client(socket):
         socket.end("\n--- Histórico das últimas 10 mensagens ---".encode())
         with history_lock:
             for msg in message_history:
-                socket.send(msg.encode())
+                socket.send((msg + '\n').encode())
         socket.send("--------------------------------------------------\n".encode())
     except:
         pass #ignora o betinha se desconectar aqui
